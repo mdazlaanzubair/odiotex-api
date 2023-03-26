@@ -4,10 +4,10 @@ import { transcript_checker } from "./helpers/transcriptionChecker.mjs";
 
 export const transcribe = async (req, res) => {
   // uploading audio file to assemblyai
-  const { error, result } = await upload_file_assemblyai("uploads/audio.mp3");
+  const { error, result } = await upload_file_assemblyai("./uploads/audio.mp3");
 
   // if - successfully uploaded transcribe audio
-  if (result.upload_url) {
+  if (result?.upload_url) {
     const data = await audio_transcriber(result.upload_url);
     res.status(200).send({
       transcription_id: data.id,
@@ -18,7 +18,7 @@ export const transcribe = async (req, res) => {
   // else - display error, returning res to the server
   else {
     // if = error throws by assemblyai server
-    if (result.error)
+    if (result?.error)
       res
         .status(500)
         .send({ error: result.error, msg: "Internal server error!" });
